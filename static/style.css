@@ -1,10 +1,11 @@
 body {
-    background: #2c3e50; !important;
+    background: #2c3e50 !important;
 }
 
 .container-fluid > div > div {
     margin: 0 auto;
     max-width: 1420px;
+    width: 100%;
     padding: 1rem;
 }
 
@@ -14,7 +15,17 @@ div.header {
     text-align: center;
 }
 
+div.header a {
+    color: #fff;
+}
+
+div.header a:hover {
+    color: #fff;
+    text-decoration: none;
+}
+
 div.description {
+    background: #fff;
     color: #2c3e50;
     line-height: 1.8rem;
 
@@ -26,6 +37,17 @@ div.description span {
     display: block;
     text-align: center;
     padding-bottom: 0.6rem;
+}
+
+
+div.content {
+    background: #2c3e50;
+    color: #fff;
+}
+
+div.content form {
+    display: -webkit-box;
+    width: 100%;
 }
 
 div.content div.addresses button {
@@ -43,7 +65,30 @@ div.content h4, div.content h5 {
     margin-bottom: 0.7rem;
 }
 
+div#banner {
+    text-align: center;
+    height: 10rem;
+    width: 60rem;
+    position: absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 17rem;
+    padding: 2rem;
+    background-color: #3498db;
+    color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+    visibility: hidden;
+}
+
+div.result {
+    color: #2c3e50;
+    background-color: #fff;
+}
+
 div.footer {
     background: #2c3e50;
     color: #ecf0f1;
 }
+
