@@ -67,8 +67,7 @@ div.content h4, div.content h5 {
 
 div#banner {
     text-align: center;
-    height: 10rem;
-    width: 60rem;
+    width: 70%;
     position: absolute;
     margin: 0 auto;
     left: 0;
@@ -79,7 +78,7 @@ div#banner {
     color: #fff;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;
-    visibility: hidden;
+    display: none;
 }
 
 div.result {
@@ -92,3 +91,8 @@ div.footer {
     color: #ecf0f1;
 }
 
+@media (max-width: 768px) {
+    .form-group {
+        display: inline !important;
+    }
+}

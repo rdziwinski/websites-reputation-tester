@@ -16,15 +16,16 @@ from flask import request
 
 class Tester:
     def __init__(self):
-        self.addresses = request.form['urls'].replace(" ", "").splitlines()
-        self.testers = request.form.getlist('checkbox')
-        self.xforce_result = ['XForce']
+        self.xforce_result = ['X-Force']
         self.mcafee_result = ['McAfee']
         self.virustotal_result = ["VirusTotal"]
         self.bluecoat_result = ['BlueCoat']
         self.ciscoblacklist_result = ['Cisco Blacklist']
         self.talos_result = ['Talos']
+        self.ipvoid_result = ['IpVoid']
         self.data = [[]]
+
+    def init_status(self):
         # Generaly
         self.s110 = "Enter IP address, URL is not supported."
         self.s111 = "Enter URL, IP is not supported."
@@ -38,7 +39,7 @@ class Tester:
         self.s1 = "Yes"
 
         # BlueCoat
-        self.s131 = "You have to complete Captcha"
+        self.s131 = "You have enter Captcha"
 
         # NsLookup
         self.s141 = "URL not found for this IP address"
@@ -62,14 +63,14 @@ class Tester:
     # RETURN 110 IF URL, 111 IF IP, 112 IF WRONG ADDRESS
     def url_or_ip(self, url):
         if validators.domain(url) is True or validators.url(url) is True:
-            return self.s110  # URL
+            return 110  # URL
         elif validators.ipv4(url) is True:
-            return self.s111  # IP
+            return 111  # IP
         else:
-            return self.s112  # Error
+            return 112  # Error
 
     # RETURN S112 IF WRONG ADDRESS, 0 IF NOT REANALYSE, 1 IF REANALYSE
-    def pre_virus_total(self, url):
+    def pre_virustotal(self, url):
         if self.url_or_ip(url) == 112:
             return self.s112
         else:
@@ -212,7 +213,6 @@ class Tester:
             'https://www.mcafee.com/threat-intelligence/ip/default.aspx?ip=' + url,
             data=post_request)
         soup = BeautifulSoup(result.text, 'html.parser')
-
         risk_results = [1, 2, 3]
         risk = []
         time.sleep(1)
@@ -232,7 +232,7 @@ class Tester:
             elif reputaton == '/img/Threat_IP/rep_high.png':
                 risk.append(154)
             else:
-                return self.s113
+                return self.s155
                 # return soup
 
         return "Web: " + risk[0] + ", Email: " + risk[1] + ", Network: " + risk[2]
@@ -270,7 +270,7 @@ class Tester:
             positives = str(rating_results['positives'])
             total = str(rating_results['total'])
             # date = str(ratingResults['last_analysis_date'])
-            rating = positives + " | " + total
+            rating = positives + "/" + total
             return rating
 
     # RETURN S111 IF IP IN ARGUMENT, S112 IF WRONG URL, STRING IP IF OK, S113 IF ERROR
@@ -379,42 +379,12 @@ class Tester:
         except:
             return self.s113
 
-    # def Zulu(url):
-    #     urlorip = UrlOrIp(url)
-    #     if urlorip == 112:
-    #         return status.s112
-    #     try:
-    #         seconds = randint(0,3)
-    #         time.sleep(seconds)
-    #         postRequest = {'submission[submission]': url,
-    #                        'submission[user_agent]': 'ie7'}
-    #         result = requests.post("http://zulu.zscaler.com/create", data=postRequest).text
-    #         number = re.search('\/status\/[a-zA-Z0-9-]+', result).group().replace("/status/", "")
-    #         querystatus = 'error'
-    #         couter=0
-    #         while querystatus != 'finished':
-    #             time.sleep(1)
-    #             statusResult = requests.get('http://zulu.zscaler.com/submission/show/status/' + number).text
-    #             statusResult = json.loads(statusResult)
-    #             querystatus = str(statusResult['status'])
-    #             couter+=1
-    #             if couter==450:
-    #                 urltoopen="http://zulu.zscaler.com/submission/show/" + number
-    #                 webbrowser.open(urltoopen)
-    #                 return status.s171
-    #             debug = number + " - " + querystatus+ " , " + str(couter)
-    #             print(debug)
-    #         reputationResult = requests.get('http://zulu.zscaler.com/submission/show/info/' + number).text
-    #         soup = BeautifulSoup(reputationResult, 'html.parser')
-    #         reputation = soup.find("span", {"style": "font-size: 70%;"}).string
-    #         return reputation
-    #     except:
-    #         return status.s113
-
     def check_talos_ip(self, url):
         try:
-            request = requests.get(
-                "https://www.talosintelligence.com/sb_api/query_lookup?query=%2Fapi%2Fv2%2Fdetails%2Fip%2F&query_entry=" + url).text
+            referer = 'https://www.talosintelligence.com/reputation_center/lookup?search='+url
+            details = "https://www.talosintelligence.com/sb_api/query_lookup?query=%2Fapi%2Fv2%2Fdetails%2Fip%2F&query_entry="+url+"&offset=0&order=ip+asc"
+            headers = {'Referer': referer}
+            request = requests.get(details, headers=headers).text
             result = json.loads(request)
             email_reputation = str(result['email_score_name'])
             web_reputation = str(result['web_score_name'])
@@ -425,10 +395,11 @@ class Tester:
 
     def check_talos_url(self, url):
         try:
-            request = requests.get(
-                "https://www.talosintelligence.com/sb_api/query_lookup?query=%2Fapi%2Fv2%2Fdetails%2Fdomain%2F&query_entry=" + url).text
+            referer = 'https://www.talosintelligence.com/reputation_center/lookup?search='+url
+            details = "https://www.talosintelligence.com/sb_api/query_lookup?query=%2Fapi%2Fv2%2Fdetails%2Fdomain%2F&query_entry="+url+"&offset=0&order=ip+asc"
+            headers = {'Referer': referer}
+            request = requests.get(details, headers=headers).text
             result = json.loads(request)
-            # return result
             if 'error' in str(result) and str(
                     result['error']) == 'Unfortunately, we can\'t find any results for your search.':
                 return self.s155

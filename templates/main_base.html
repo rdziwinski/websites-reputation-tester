@@ -7,7 +7,7 @@
         <link rel="stylesheet" href="../static/style.css">
         <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.css">
         <link rel="stylesheet" href="../static/bootstrap/css/bootstrap-grid.css">
-        <title>NMS - {% block title %}{% endblock %}</title>
+        <title>Reputation Tester{% block title %}{% endblock %}</title>
     {% endblock %}
 </head>
 <body>
@@ -33,7 +33,7 @@
             $('input.rep:checkbox').not(this).prop('checked', this.checked);
         });
         $('#form').submit(function() {
-            $('#banner').css('visibility', 'visible');
+            $('#banner').css('display', 'block');
         });
     </script>
 
