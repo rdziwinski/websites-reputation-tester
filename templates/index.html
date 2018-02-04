@@ -1,0 +1,86 @@
+{% extends "main_base.html" %}
+{% block title %}{{ name }}{% endblock %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block index %}
+    <div class="row description">
+        <div class="col">
+            <span>This website is very helpfully utilities for bulk testing website reputation.
+            You can testing only one page or many by typing each in a new line.
+            The application does not check it by itself. It uses trusted, specialized in security, external websites:</span>
+            <ul>
+                <li><b>X-Force</b> - Deep security research expertise and global threat intelligence for enhanced security solutions.</li>
+                <li><b>McAfee</b> - Search in McAfee Threat Library and return report about URL or IP.</li>
+                <li><b>VirusTotal</b> - Aggregates many antivirus products and online scan engines to check URL or IP</li>
+                <li><b>BlueCoat</b> - Allow users to check the current categorization of URL.</li>
+                <li><b>IpVoid</b> - Scan an IP address through multiple DNS-based blacklists and IP reputation services, to facilitate the detection of IP addresses involved in malware incidents and spamming activities.</li>
+                <li><b>CiscoBlacklist</b> - Search in Cisco Blacklist located on <a href="http://www.talosintelligence.com/feeds/ip-filter.blf" title="talosintelligence">talosintelligence</a> website.</li>
+                <li><b>Talos</b> - Check website or IP address, both in WEB and EMAIL reputation.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        <div class="row">
+            <form action="" method="POST" id="form" class="form-group">
+                <div class="col-xl-6 col-md-5 col-sm-12 settings">
+                    <h4>Select test</h4>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="checkbox" value="xforce" class="rep">
+                            {{ data.xforce_result[0] }}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="checkbox" value="mcafee" class="rep">
+                            {{ data.mcafee_result[0] }}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="checkbox" value="virustotal" class="rep">
+                            {{ data.virustotal_result[0] }}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="checkbox" value="bluecoat" class="rep">
+                            {{ data.bluecoat_result[0] }}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="checkbox" value="ipvoid" class="rep">
+                            {{ data.ipvoid_result[0] }}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="checkbox" value="ciscoblacklist" class="rep">
+                            {{ data.ciscoblacklist_result[0] }}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="checkbox" value="talos" class="rep">
+                            {{ data.talos_result[0] }}
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="checkAll">
+                            Zaznacz wszystkie
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-md-7 col-sm-12 addresses">
+                    <h4>Addresses</h4>
+                    <textarea name="urls" class="form-control" rows="10" placeholder="8.8.8.8 or google.com"></textarea>
+                    <button type="submit" class="btn btn-primary">Check it!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="banner"><h1>Please wait...</h1><h3>We send requests to external websites and waiting for response.</h3></div>
+{% endblock %}

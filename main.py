@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from core.data import *
-from core.tester import *
 app = Flask(__name__)
 
 
@@ -17,7 +16,7 @@ def results():
 
 
 if __name__ == '__main__':
-    app.run(debug=True,
+    app.run(debug=False,
             threaded=True,
             port=80
             )

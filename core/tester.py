@@ -1,6 +1,4 @@
-from multiprocessing.dummy import Pool as ThreadPool
 from random import randint
-from urllib.parse import urlparse
 
 import json
 import re
@@ -11,7 +9,6 @@ import validators
 import webbrowser
 from bs4 import BeautifulSoup
 from requests.auth import HTTPBasicAuth
-from flask import request
 
 
 class Tester:
@@ -359,25 +356,11 @@ class Tester:
             return self.check_ipvoid(url)
         elif urlorip == 110:
             ip = self.nslookup(url)
+            if ip == self.s142:
+                return self.s142
             return self.check_ipvoid(ip)
         else:
             return self.s112
-
-    def zulu(self, url):
-        urlorip = self.url_or_ip(url)
-        if urlorip == 112:
-            return self.s112
-        try:
-            seconds = randint(0, 3)
-            time.sleep(seconds)
-            post_request = {'submission[submission]': url,
-                            'submission[user_agent]': 'ie7'}
-            result = requests.post("http://zulu.zscaler.com/create", data=post_request).text
-            number = re.search('\/status\/[a-zA-Z0-9-]+', result).group().replace("/status/", "")
-            url_to_open = "http://zulu.zscaler.com/submission/show/" + number
-            webbrowser.open(url_to_open)
-        except:
-            return self.s113
 
     def check_talos_ip(self, url):
         try:
